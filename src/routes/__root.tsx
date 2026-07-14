@@ -79,10 +79,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Student ChatBot AI — Learn, Connect and Grow Together" },
       { name: "description", content: "AI-powered academic assistant for students, seniors and lecturers. Ask questions, get instant answers and connect with mentors." },
-      { property: "og:title", content: "Student ChatBot AI" },
-      { property: "og:description", content: "AI-powered academic assistant for students, seniors and lecturers." },
+      { property: "og:title", content: "Student ChatBot AI — Learn, Connect and Grow Together" },
+      { property: "og:description", content: "AI-powered academic assistant for students, seniors and lecturers. Ask questions, get instant answers and connect with mentors." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Student ChatBot AI — Learn, Connect and Grow Together" },
+      { name: "twitter:description", content: "AI-powered academic assistant for students, seniors and lecturers. Ask questions, get instant answers and connect with mentors." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/5ce22898-f8fd-4abd-b63f-04c00d32d3df" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/5ce22898-f8fd-4abd-b63f-04c00d32d3df" },
     ],
     links: [
       {
