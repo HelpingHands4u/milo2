@@ -18,7 +18,7 @@ function ForgotPage() {
   return (
     <AppShell hideFooter>
       <div className="mx-auto max-w-md px-4 py-14 sm:px-6">
-        <Card className="border-border shadow-[var(--shadow-card)]">
+        <Card className="border-border shadow-(--shadow-card)">
           <CardContent className="p-6 sm:p-8">
             <h1 className="text-xl font-semibold">Reset your password</h1>
             <p className="mt-1 text-sm text-muted-foreground">

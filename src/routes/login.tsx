@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../lib/firebase";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -19,8 +21,29 @@ const roles = [
 ] as const;
 
 function LoginPage() {
-  const navigate = useNavigate();
-  const [role, setRole] = useState<(typeof roles)[number]["id"]>("student");
+  // const navigate = useNavigate();
+  // const [role, setRole] = useState<(typeof roles)[number]["id"]>("student");
+     const navigate = useNavigate();
+
+const [role, setRole] = useState<(typeof roles)[number]["id"]>("student");
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+
+ const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      navigate({ to: "/dashboard" });
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
 
   return (
     <AppShell hideFooter>
@@ -60,23 +83,43 @@ function LoginPage() {
               ))}
             </div>
 
-            <form
+            {/* <form
               className="mt-6 space-y-4"
               onSubmit={(e) => {
                 e.preventDefault();
                 navigate({ to: "/dashboard" });
               }}
-            >
+            > */}
+            <form
+              className="mt-6 space-y-4"
+              onSubmit={handleLogin}
+              >
               <div className="space-y-1.5">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="you@university.edu" required />
+                {/* <Input id="email" type="email" placeholder="you@university.edu" required /> */}
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="you@university.edu"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  />
               </div>
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Password</Label>
                   <Link to="/forgot-password" className="text-xs text-primary hover:underline">Forgot?</Link>
                 </div>
-                <Input id="password" type="password" placeholder="••••••••" required />
+                {/* <Input id="password" type="password" placeholder="••••••••" required /> */}
+                <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                />
               </div>
               <Button type="submit" className="w-full">Log in as {roles.find((r) => r.id === role)?.label}</Button>
             </form>

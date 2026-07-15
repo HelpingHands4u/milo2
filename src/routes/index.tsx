@@ -63,7 +63,7 @@ function Landing() {
 
           {/* Preview card */}
           <div className="mx-auto mt-14 max-w-4xl">
-            <Card className="overflow-hidden border-border shadow-[var(--shadow-elevated)]">
+            <Card className="overflow-hidden border-border shadow-(--shadow-card)">
               <CardContent className="p-0">
                 <div className="grid gap-0 md:grid-cols-[220px_1fr]">
                   <div className="hidden flex-col gap-2 border-r border-border bg-muted/40 p-4 md:flex">
@@ -103,7 +103,7 @@ function Landing() {
         </div>
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((f) => (
-            <Card key={f.title} className="border-border transition-shadow hover:shadow-[var(--shadow-card)]">
+            <Card key={f.title} className="border-border transition-shadow hover:shadow-(--shadow-card)">
               <CardContent className="p-6">
                 <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary-soft text-primary">
                   <f.icon className="h-5 w-5" />
@@ -154,7 +154,7 @@ function Landing() {
 
       {/* CTA */}
       <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6">
-        <Card className="overflow-hidden border-none bg-primary text-primary-foreground shadow-[var(--shadow-elevated)]">
+        <Card className="overflow-hidden border-none bg-primary text-primary-foreground shadow-(--shadow-card)">
           <CardContent className="grid gap-6 p-8 sm:p-12 md:grid-cols-[1fr_auto] md:items-center">
             <div>
               <h3 className="text-2xl font-bold sm:text-3xl">Ready to study smarter?</h3>
