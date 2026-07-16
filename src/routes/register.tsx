@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { GraduationCap, BookOpen, Users } from "lucide-react";
+import { GraduationCap, BookOpen, Users, Loader2, AlertCircle } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,6 +21,30 @@ const roles = [
 function RegisterPage() {
   const navigate = useNavigate();
   const [role, setRole] = useState<(typeof roles)[number]["id"]>("student");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters.");
+      return;
+    }
+
+    setLoading(true);
+    // Simulate network delay
+    await new Promise((r) => setTimeout(r, 900));
+    setLoading(false);
+
+    // In demo mode, registration always succeeds and goes to dashboard
+    navigate({ to: "/dashboard" });
+  };
 
   return (
     <AppShell hideFooter>
@@ -44,9 +68,13 @@ function RegisterPage() {
                         : "border-border hover:border-foreground/20"
                     }`}
                   >
-                    <r.icon className={`mt-0.5 h-5 w-5 shrink-0 ${role === r.id ? "text-primary" : "text-muted-foreground"}`} />
+                    <r.icon
+                      className={`mt-0.5 h-5 w-5 shrink-0 ${role === r.id ? "text-primary" : "text-muted-foreground"}`}
+                    />
                     <div className="min-w-0">
-                      <div className={`text-sm font-medium ${role === r.id ? "text-primary" : ""}`}>{r.label}</div>
+                      <div className={`text-sm font-medium ${role === r.id ? "text-primary" : ""}`}>
+                        {r.label}
+                      </div>
                       <div className="text-xs text-muted-foreground">{r.desc}</div>
                     </div>
                   </button>
@@ -54,36 +82,77 @@ function RegisterPage() {
               </div>
             </div>
 
-            <form
-              className="mt-6 space-y-4"
-              onSubmit={(e) => {
-                e.preventDefault();
-                navigate({ to: "/dashboard" });
-              }}
-            >
+            {error && (
+              <div className="mt-4 flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2.5 text-xs text-destructive">
+                <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                <span>{error}</span>
+              </div>
+            )}
+
+            <form className="mt-6 space-y-4" onSubmit={handleRegister}>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-1.5">
                   <Label htmlFor="fname">First name</Label>
-                  <Input id="fname" required />
+                  <Input
+                    id="fname"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    required
+                    disabled={loading}
+                  />
                 </div>
                 <div className="space-y-1.5">
                   <Label htmlFor="lname">Last name</Label>
-                  <Input id="lname" required />
+                  <Input
+                    id="lname"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    required
+                    disabled={loading}
+                  />
                 </div>
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="email">University email</Label>
-                <Input id="email" type="email" placeholder="you@university.edu" required />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="you@university.edu"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  disabled={loading}
+                />
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="password">Password</Label>
-                <Input id="password" type="password" placeholder="At least 8 characters" required />
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="At least 8 characters"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  disabled={loading}
+                />
               </div>
-              <Button type="submit" className="w-full">Create account</Button>
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Creating account…
+                  </>
+                ) : (
+                  "Create account"
+                )}
+              </Button>
             </form>
 
             <p className="mt-4 text-center text-sm text-muted-foreground">
-              Already have one? <Link to="/login" className="text-primary hover:underline">Log in</Link>
+              Already have one?{" "}
+              <Link to="/login" className="text-primary hover:underline">
+                Log in
+              </Link>
             </p>
           </CardContent>
         </Card>
