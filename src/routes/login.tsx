@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../lib/firebase";
+import { auth } from "@/lib/firebase";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -29,7 +29,7 @@ const [role, setRole] = useState<(typeof roles)[number]["id"]>("student");
 const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
 
- const handleLogin = async (e: React.FormEvent) => {
+const handleLogin = async (e: React.FormEvent<HTMLFormElement>) =>  {
     e.preventDefault();
 
     try {
@@ -39,7 +39,8 @@ const [password, setPassword] = useState("");
         password
       );
 
-      navigate({ to: "/dashboard" });
+      // navigate({ to: "/dashboard" });
+      alert("Login successful!");
     } catch (error: any) {
       alert(error.message);
     }
@@ -60,7 +61,7 @@ const [password, setPassword] = useState("");
           </ul>
         </div>
 
-        <Card className="border-border shadow-[var(--shadow-card)]">
+        <Card className="border-border shadow-(--shadow-card)">
           <CardContent className="p-6 sm:p-8">
             <h2 className="text-xl font-semibold">Log in to your account</h2>
             <p className="mt-1 text-sm text-muted-foreground">Choose your role and sign in.</p>

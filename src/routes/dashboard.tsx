@@ -4,6 +4,10 @@ import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { auth } from "@/lib/firebase";
+
+const user = auth.currentUser;
+const userName = user?.email?.split("@")[0] || "Student";
 
 export const Route = createFileRoute("/dashboard")({
   component: Dashboard,
@@ -39,7 +43,8 @@ function Dashboard() {
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
         <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 sm:flex sm:justify-between">
           <div className="min-w-0">
-            <h1 className="truncate text-2xl font-bold sm:text-3xl">Welcome back, Alex 👋</h1>
+            {/* <h1 className="truncate text-2xl font-bold sm:text-3xl">Welcome back, Alex 👋</h1> */}
+            <h1 className="truncate text-2xl font-bold sm:text-3xl">Welcome back, {userName} 👋</h1>
             <p className="mt-1 text-sm text-muted-foreground">Here's what's happening in your workspace today.</p>
           </div>
           <Button asChild>
