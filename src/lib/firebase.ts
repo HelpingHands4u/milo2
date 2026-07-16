@@ -3,12 +3,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDd_cG9cMVjwL3zrm8MShgFyJaHoewTLhg",
-  authDomain: "student-chatbot-ai.firebaseapp.com",
-  projectId: "student-chatbot-ai",
-  storageBucket: "student-chatbot-ai.firebasestorage.app",
-  messagingSenderId: "526263984530",
-  appId: "1:526263984530:web:47a4a781f6c1ce6182214b"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);

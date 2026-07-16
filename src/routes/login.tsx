@@ -1,13 +1,13 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { GraduationCap, BookOpen, Users } from "lucide-react";
+import { GraduationCap, BookOpen, Users, AlertCircle, Loader2 } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { auth } from "../lib/firebase";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -20,16 +20,22 @@ const roles = [
   { id: "senior", label: "Senior Mentor", icon: Users },
 ] as const;
 
+// Simple in-memory demo accounts (no backend required)
+const DEMO_ACCOUNTS: Record<string, { password: string; role: string }> = {
+  "student@demo.com": { password: "student123", role: "student" },
+  "lecturer@demo.com": { password: "lecturer123", role: "lecturer" },
+  "mentor@demo.com": { password: "mentor123", role: "senior" },
+};
+
 function LoginPage() {
-  // const navigate = useNavigate();
-  // const [role, setRole] = useState<(typeof roles)[number]["id"]>("student");
-     const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [role, setRole] = useState<(typeof roles)[number]["id"]>("student");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-const [role, setRole] = useState<(typeof roles)[number]["id"]>("student");
-const [email, setEmail] = useState("");
-const [password, setPassword] = useState("");
-
-const handleLogin = async (e: React.FormEvent<HTMLFormElement>) =>  {
+ const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
@@ -39,8 +45,7 @@ const handleLogin = async (e: React.FormEvent<HTMLFormElement>) =>  {
         password
       );
 
-      // navigate({ to: "/dashboard" });
-      alert("Login successful!");
+      navigate({ to: "/dashboard" });
     } catch (error: any) {
       alert(error.message);
     }
@@ -59,6 +64,14 @@ const handleLogin = async (e: React.FormEvent<HTMLFormElement>) =>  {
             <li>• Connect with senior mentors</li>
             <li>• Stay on top of lecturer announcements</li>
           </ul>
+          <div className="mt-8 rounded-lg border border-border bg-card p-4 text-xs text-muted-foreground">
+            <div className="font-semibold text-foreground mb-2">Demo accounts</div>
+            <div className="space-y-1">
+              <div><span className="font-medium text-foreground">student@demo.com</span> / student123</div>
+              <div><span className="font-medium text-foreground">lecturer@demo.com</span> / lecturer123</div>
+              <div><span className="font-medium text-foreground">mentor@demo.com</span> / mentor123</div>
+            </div>
+          </div>
         </div>
 
         <Card className="border-border shadow-(--shadow-card)">
@@ -84,20 +97,16 @@ const handleLogin = async (e: React.FormEvent<HTMLFormElement>) =>  {
               ))}
             </div>
 
-            {/* <form
-              className="mt-6 space-y-4"
-              onSubmit={(e) => {
-                e.preventDefault();
-                navigate({ to: "/dashboard" });
-              }}
-            > */}
-            <form
-              className="mt-6 space-y-4"
-              onSubmit={handleLogin}
-              >
+            {error && (
+              <div className="mt-4 flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2.5 text-xs text-destructive">
+                <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                <span>{error}</span>
+              </div>
+            )}
+
+            <form className="mt-5 space-y-4" onSubmit={handleLogin}>
               <div className="space-y-1.5">
                 <Label htmlFor="email">Email</Label>
-                {/* <Input id="email" type="email" placeholder="you@university.edu" required /> */}
                 <Input
                   id="email"
                   type="email"
@@ -105,28 +114,43 @@ const handleLogin = async (e: React.FormEvent<HTMLFormElement>) =>  {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  />
+                  disabled={loading}
+                />
               </div>
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Password</Label>
-                  <Link to="/forgot-password" className="text-xs text-primary hover:underline">Forgot?</Link>
+                  <Link to="/forgot-password" className="text-xs text-primary hover:underline">
+                    Forgot?
+                  </Link>
                 </div>
-                {/* <Input id="password" type="password" placeholder="••••••••" required /> */}
                 <Input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  disabled={loading}
                 />
               </div>
-              <Button type="submit" className="w-full">Log in as {roles.find((r) => r.id === role)?.label}</Button>
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Signing in…
+                  </>
+                ) : (
+                  <>Log in as {roles.find((r) => r.id === role)?.label}</>
+                )}
+              </Button>
             </form>
 
             <p className="mt-4 text-center text-sm text-muted-foreground">
-              New here? <Link to="/register" className="text-primary hover:underline">Create an account</Link>
+              New here?{" "}
+              <Link to="/register" className="text-primary hover:underline">
+                Create an account
+              </Link>
             </p>
           </CardContent>
         </Card>

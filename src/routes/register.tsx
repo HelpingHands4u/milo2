@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { GraduationCap, BookOpen, Users } from "lucide-react";
+import { GraduationCap, BookOpen, Users, Loader2, AlertCircle } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -25,36 +25,7 @@ function RegisterPage() {
   // const navigate = useNavigate();
   // const [role, setRole] = useState<(typeof roles)[number]["id"]>("student");
   const navigate = useNavigate();
-
-const [role, setRole] = useState<(typeof roles)[number]["id"]>("student");
-
-const [firstName, setFirstName] = useState("");
-const [lastName, setLastName] = useState("");
-const [email, setEmail] = useState("");
-const [password, setPassword] = useState("");
-const handleRegister = async (e: any) => {
-  e.preventDefault();
-
-  try {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-
-    await setDoc(doc(db, "users", userCredential.user.uid), {
-      firstName,
-      lastName,
-      email,
-      role,
-      createdAt: new Date(),
-    });
-
-    alert("Account created successfully!");
-  } catch (error: any) {
-    alert(error.message);
-  }
-};
+  const [role, setRole] = useState<(typeof roles)[number]["id"]>("student");
 
   return (
     <AppShell hideFooter>
@@ -78,9 +49,13 @@ const handleRegister = async (e: any) => {
                         : "border-border hover:border-foreground/20"
                     }`}
                   >
-                    <r.icon className={`mt-0.5 h-5 w-5 shrink-0 ${role === r.id ? "text-primary" : "text-muted-foreground"}`} />
+                    <r.icon
+                      className={`mt-0.5 h-5 w-5 shrink-0 ${role === r.id ? "text-primary" : "text-muted-foreground"}`}
+                    />
                     <div className="min-w-0">
-                      <div className={`text-sm font-medium ${role === r.id ? "text-primary" : ""}`}>{r.label}</div>
+                      <div className={`text-sm font-medium ${role === r.id ? "text-primary" : ""}`}>
+                        {r.label}
+                      </div>
                       <div className="text-xs text-muted-foreground">{r.desc}</div>
                     </div>
                   </button>
@@ -89,67 +64,47 @@ const handleRegister = async (e: any) => {
             </div>
 
             <form
-              // className="mt-6 space-y-4"
-              // onSubmit={(e) => {
-              //   e.preventDefault();
-              //   navigate({ to: "/dashboard" });
-              
               className="mt-6 space-y-4"
-               onSubmit={handleRegister}
-          
-              // }}
+              onSubmit={(e) => {
+                e.preventDefault();
+                navigate({ to: "/dashboard" });
+              }}
             >
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-1.5">
                   <Label htmlFor="fname">First name</Label>
-                  {/* <Input id="fname" required /> */}
-                  <Input
-                    id="fname"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    required
-                    />
+                  <Input id="fname" required />
                 </div>
                 <div className="space-y-1.5">
                   <Label htmlFor="lname">Last name</Label>
-                  {/* <Input id="lname" required /> */}
-                  <Input
-                    id="lname"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    required
-                    />
+                  <Input id="lname" required />
                 </div>
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="email">University email</Label>
-                {/* <Input id="email" type="email" placeholder="you@university.edu" required /> */}
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="you@university.edu"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
+                <Input id="email" type="email" placeholder="you@university.edu" required />
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="password">Password</Label>
-                {/* <Input id="password" type="password" placeholder="At least 8 characters" required /> */}
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="At least 8 characters"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  />
+                <Input id="password" type="password" placeholder="At least 8 characters" required />
               </div>
-              <Button type="submit" className="w-full">Create account</Button>
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Creating account…
+                  </>
+                ) : (
+                  "Create account"
+                )}
+              </Button>
             </form>
 
             <p className="mt-4 text-center text-sm text-muted-foreground">
-              Already have one? <Link to="/login" className="text-primary hover:underline">Log in</Link>
+              Already have one?{" "}
+              <Link to="/login" className="text-primary hover:underline">
+                Log in
+              </Link>
             </p>
           </CardContent>
         </Card>
