@@ -35,19 +35,18 @@ function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
- const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
 
     try {
-      await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
+      await signInWithEmailAndPassword(auth, email, password);
       navigate({ to: "/dashboard" });
-    } catch (error: any) {
-      alert(error.message);
+    } catch (err: any) {
+      setError(err?.message ?? "Unable to log in. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 

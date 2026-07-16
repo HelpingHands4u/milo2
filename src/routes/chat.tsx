@@ -5,6 +5,11 @@ import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { groq } from "../lib/groq";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { auth, db } from "@/lib/firebase";
+import type { ChatCompletionMessageParam } from "groq-sdk/resources/chat/completions";
+
 
 export const Route = createFileRoute("/chat")({
   component: ChatPage,
@@ -30,24 +35,89 @@ function ChatPage() {
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const send = (text: string) => {
-    const trimmed = text.trim();
-    if (!trimmed) return;
-    setMessages((m) => [...m, { role: "user", text: trimmed }]);
-    setInput("");
-    setTimeout(() => {
-      setMessages((m) => [
-        ...m,
-        {
-          role: "ai",
-          text: `Here's a clear take on "${trimmed}" (subject: ${subject}). Once Gemini API is connected, I'll return live answers with examples, sources, and follow-up questions.`,
-        },
-      ]);
-      requestAnimationFrame(() => {
-        scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
-      });
-    }, 400);
-  };
+   const send = async (text: string) => {
+  const trimmed = text.trim();
+
+  if (!trimmed) return;
+
+  setMessages((m) => [...m, { role: "user", text: trimmed }]);
+  setInput("");
+
+  try {
+     const chatHistory: ChatCompletionMessageParam[] = [
+  ...messages.map((msg): ChatCompletionMessageParam => ({
+    role: msg.role === "ai" ? "assistant" : "user",
+    content: msg.text,
+  })),
+  {
+    role: "user" as const,
+    content: trimmed,
+  },
+];
+
+const response = await groq.chat.completions.create({
+  messages: [
+  {
+    role: "system",
+    content: `You are Student ChatBot AI for Brainware University.
+    Help students with academics, coding, assignments, cybersecurity,
+    mathematics and general studies.
+    Remember details shared by the user during this conversation and use them when asked later.`,
+  },
+  ...chatHistory,
+],
+  model: "llama-3.3-70b-versatile",
+});
+
+  const answer =
+  response.choices[0]?.message?.content ||
+  "Sorry, I couldn't generate a response.";
+  
+
+setMessages((m) => [
+  ...m,
+  {
+    role: "ai",
+    text: answer,
+  },
+]);
+
+if (auth.currentUser) {
+  await addDoc(
+    collection(
+      db,
+      "users",
+      auth.currentUser.uid,
+      "chats"
+    ),
+    {
+      message: trimmed,
+      response: answer,
+      subject: subject,
+      timestamp: serverTimestamp(),
+    }
+  );
+}
+
+requestAnimationFrame(() => {
+  scrollRef.current?.scrollTo({
+    top: scrollRef.current.scrollHeight,
+    behavior: "smooth",
+  });
+});
+
+} catch (error) {
+  console.error(error);
+
+  setMessages((m) => [
+    ...m,
+    {
+      role: "ai",
+      text: "Error connecting to AI service.",
+    },
+  ]);
+}
+};
 
   return (
     <AppShell hideFooter>
