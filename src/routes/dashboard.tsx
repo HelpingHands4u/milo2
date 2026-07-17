@@ -6,8 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { auth } from "@/lib/firebase";
 
-const user = auth.currentUser;
-const userName = user?.email?.split("@")[0] || "Student";
+
 
 export const Route = createFileRoute("/dashboard")({
   component: Dashboard,
@@ -38,6 +37,8 @@ const mentors = [
 ];
 
 function Dashboard() {
+  const user = auth.currentUser;
+  const userName = user?.email?.split("@")[0] || "Student";
   return (
     <AppShell>
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">

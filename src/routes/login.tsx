@@ -7,7 +7,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../lib/firebase";
+import { auth, db } from "../lib/firebase";
+import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -41,8 +42,23 @@ function LoginPage() {
     setLoading(true);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate({ to: "/dashboard" });
+      const userCredential = await signInWithEmailAndPassword(
+  auth,
+  email,
+  password
+);
+
+const user = userCredential.user;
+
+await updateDoc(
+  doc(db, "users", user.uid),
+  {
+    online: true,
+    lastSeen: serverTimestamp(),
+  }
+);
+
+navigate({ to: "/dashboard" });
     } catch (err: any) {
       setError(err?.message ?? "Unable to log in. Please try again.");
     } finally {

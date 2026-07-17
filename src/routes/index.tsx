@@ -3,9 +3,17 @@ import { Bot, GraduationCap, MessageSquare, Sparkles, Users, BookOpen, ShieldChe
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useEffect } from "react";
-import { doc, updateDoc, increment } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import {
+  doc,
+  increment,
+  setDoc,
+  onSnapshot,
+} from "firebase/firestore";
 import { db } from "@/lib/firebase";
+
+
+
 
 export const Route = createFileRoute("/")({
   component: Landing,
@@ -20,12 +28,7 @@ const features = [
   { icon: ShieldCheck, title: "Safe & Private", desc: "A secure academic space designed for focused learning and collaboration." },
 ];
 
-const stats = [
-  { value: "25k+", label: "Active students" },
-  { value: "1.2M", label: "Questions answered" },
-  { value: "800+", label: "Verified mentors" },
-  { value: "120+", label: "Partner departments" },
-];
+
 
 const testimonials = [
   { name: "Ananya S.", role: "CS Undergraduate", quote: "It's like having a patient tutor available any time I hit a wall on a problem set." },
@@ -34,22 +37,70 @@ const testimonials = [
 ];
 
 function Landing() {
+  const [statsData, setStatsData] = useState({
+    totalVisitors: 0,
+    onlineUsers: 0,
+    totalUsers: 0,
+    totalQuestions: 0,
+  });
+
+  const stats = [
+    {
+      value: statsData.totalVisitors.toString(),
+      label: "Website Visitors",
+    },
+    {
+      value: statsData.onlineUsers.toString(),
+      label: "Online Users",
+    },
+    {
+      value: statsData.totalUsers.toString(),
+      label: "Registered Users",
+    },
+    {
+      value: statsData.totalQuestions.toString(),
+      label: "Questions Asked",
+    },
+  ];
+
   useEffect(() => {
-  const countVisitor = async () => {
-    if (!localStorage.getItem("visited")) {
-      await updateDoc(
-        doc(db, "analytics", "visitors"),
-        {
-          totalVisitors: increment(1),
+    const countVisitor = async () => {
+      const alreadyVisited = localStorage.getItem("visited");
+
+      if (!alreadyVisited) {
+        await setDoc(
+          doc(db, "analytics", "visitors"),
+          {
+            totalVisitors: increment(1),
+          },
+          { merge: true }
+        );
+
+        localStorage.setItem("visited", "true");
+      }
+    };
+
+    countVisitor();
+
+    const unsubscribe = onSnapshot(
+      doc(db, "analytics", "visitors"),
+      (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.data();
+
+          setStatsData({
+            totalVisitors: data.totalVisitors || 0,
+            onlineUsers: data.onlineUsers || 0,
+            totalUsers: data.totalUsers || 0,
+            totalQuestions: data.totalQuestions || 0,
+          });
         }
-      );
+      }
+    );
 
-      localStorage.setItem("visited", "true");
-    }
-  };
+    return () => unsubscribe();
+  }, []);
 
-  countVisitor();
-}, []);
   return (
     <AppShell>
       {/* Hero */}

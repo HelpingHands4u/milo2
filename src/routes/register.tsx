@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, setDoc, increment, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 
 export const Route = createFileRoute("/register")({
@@ -38,8 +38,16 @@ function RegisterPage() {
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+           await setDoc(
+  doc(db, "analytics", "visitors"),
+  {
+    totalUsers: increment(1),
+  },
+  { merge: true }
+);
 
+      const user = userCredential.user;
+ 
       await setDoc(doc(db, "users", user.uid), {
         firstName,
         lastName,
