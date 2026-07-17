@@ -3,6 +3,9 @@ import { Bot, GraduationCap, MessageSquare, Sparkles, Users, BookOpen, ShieldChe
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useEffect } from "react";
+import { doc, updateDoc, increment } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 export const Route = createFileRoute("/")({
   component: Landing,
@@ -31,6 +34,22 @@ const testimonials = [
 ];
 
 function Landing() {
+  useEffect(() => {
+  const countVisitor = async () => {
+    if (!localStorage.getItem("visited")) {
+      await updateDoc(
+        doc(db, "analytics", "visitors"),
+        {
+          totalVisitors: increment(1),
+        }
+      );
+
+      localStorage.setItem("visited", "true");
+    }
+  };
+
+  countVisitor();
+}, []);
   return (
     <AppShell>
       {/* Hero */}
