@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as MentorsRouteImport } from './routes/mentors'
+import { Route as MapRouteImport } from './routes/map'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LecturerRouteImport } from './routes/lecturer'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
@@ -32,6 +33,11 @@ const ProfileRoute = ProfileRouteImport.update({
 const MentorsRoute = MentorsRouteImport.update({
   id: '/mentors',
   path: '/mentors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MapRoute = MapRouteImport.update({
+  id: '/map',
+  path: '/map',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/forgot-password': typeof ForgotPasswordRoute
   '/lecturer': typeof LecturerRoute
   '/login': typeof LoginRoute
+  '/map': typeof MapRoute
   '/mentors': typeof MentorsRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
   '/lecturer': typeof LecturerRoute
   '/login': typeof LoginRoute
+  '/map': typeof MapRoute
   '/mentors': typeof MentorsRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/forgot-password': typeof ForgotPasswordRoute
   '/lecturer': typeof LecturerRoute
   '/login': typeof LoginRoute
+  '/map': typeof MapRoute
   '/mentors': typeof MentorsRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/lecturer'
     | '/login'
+    | '/map'
     | '/mentors'
     | '/profile'
     | '/register'
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/lecturer'
     | '/login'
+    | '/map'
     | '/mentors'
     | '/profile'
     | '/register'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/lecturer'
     | '/login'
+    | '/map'
     | '/mentors'
     | '/profile'
     | '/register'
@@ -142,6 +154,7 @@ export interface RootRouteChildren {
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LecturerRoute: typeof LecturerRoute
   LoginRoute: typeof LoginRoute
+  MapRoute: typeof MapRoute
   MentorsRoute: typeof MentorsRoute
   ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
@@ -168,6 +181,13 @@ declare module '@tanstack/react-router' {
       path: '/mentors'
       fullPath: '/mentors'
       preLoaderRoute: typeof MentorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/map': {
+      id: '/map'
+      path: '/map'
+      fullPath: '/map'
+      preLoaderRoute: typeof MapRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -222,6 +242,7 @@ const rootRouteChildren: RootRouteChildren = {
   ForgotPasswordRoute: ForgotPasswordRoute,
   LecturerRoute: LecturerRoute,
   LoginRoute: LoginRoute,
+  MapRoute: MapRoute,
   MentorsRoute: MentorsRoute,
   ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,
