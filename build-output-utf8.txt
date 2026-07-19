@@ -1,0 +1,169 @@
+﻿
+> build
+> vite build
+
+node.exe : [33mThe plugin "vite-tsconfig-paths" is detected. Vite now 
+supports tsconfig paths resolution natively via the 
+[1mresolve.tsconfigPaths[22m option. You can remove the plugin and set 
+[1mresolve.tsconfigPaths: true[22m in your Vite config instead.[39m
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([33mThe plugin...g instead.[39m 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[36mvite v8.1.4 [32mbuilding client environment for production...[36m[39m
+[2K
+transforming...Γ£ô 1980 modules transformed.
+rendering chunks...
+computing gzip size...
+.output/public/assets/styles-Bc7yRO38.css           84.60 kB Γöé gzip:  14.09 kB
+.output/public/assets/check-DaYazPW0.js              0.11 kB Γöé gzip:   0.13 kB
+.output/public/assets/arrow-right-CUIeHyxd.js        0.15 kB Γöé gzip:   0.15 kB
+.output/public/assets/message-square-BuXml5cD.js     0.22 kB Γöé gzip:   0.19 kB
+.output/public/assets/circle-alert-B6oTnKdg.js       0.24 kB Γöé gzip:   0.18 kB
+.output/public/assets/bell-CwyJdieC.js               0.28 kB Γöé gzip:   0.23 kB
+.output/public/assets/bot-C_3tuZ5t.js                0.32 kB Γöé gzip:   0.22 kB
+.output/public/assets/_mentorId-BfU7TauI.js          0.37 kB Γöé gzip:   0.26 kB
+.output/public/assets/sparkles-C6Q6B4YP.js           0.48 kB Γöé gzip:   0.27 kB
+.output/public/assets/users-PWujnrSe.js              0.52 kB Γöé gzip:   0.30 kB
+.output/public/assets/input-Lv5oRXMZ.js              0.61 kB Γöé gzip:   0.38 kB
+.output/public/assets/textarea-s7RuIxZi.js           0.75 kB Γöé gzip:   0.50 kB
+.output/public/assets/badge-M4Ronbid.js              0.77 kB Γöé gzip:   0.40 kB
+.output/public/assets/card-DuVHnn_y.js               1.04 kB Γöé gzip:   0.39 kB
+.output/public/assets/label-CS2xH45E.js              1.04 kB Γöé gzip:   0.64 kB
+.output/public/assets/forgot-password-CkNuhDAs.js    2.60 kB Γöé gzip:   1.14 kB
+.output/public/assets/mentors-DeA3h-4e.js            3.40 kB Γöé gzip:   1.52 kB
+.output/public/assets/register-CtiYL11R.js           3.90 kB Γöé gzip:   1.52 kB
+.output/public/assets/login-CjPZHOl6.js              4.58 kB Γöé gzip:   1.72 kB
+.output/public/assets/profile-Djhasuij.js            5.20 kB Γöé gzip:   1.96 kB
+.output/public/assets/dashboard-BiJQmaky.js          5.43 kB Γöé gzip:   1.86 kB
+.output/public/assets/lecturer-BTkneLfq.js           8.84 kB Γöé gzip:   2.80 kB
+.output/public/assets/routes-DE5YcLYD.js             9.38 kB Γöé gzip:   3.26 kB
+.output/public/assets/chat-B9HMbOwD.js              36.22 kB Γöé gzip:  12.76 kB
+.output/public/assets/app-shell-BgztTslK.js         38.16 kB Γöé gzip:  12.24 kB
+.output/public/assets/map-Cr0yj6V6.js               46.56 kB Γöé gzip:  15.34 kB
+.output/public/assets/index-DP97SsFX.js            348.07 kB Γöé gzip: 109.44 kB
+.output/public/assets/firebase-BlTnilTr.js         558.56 kB Γöé gzip: 165.17 kB
+
+[33m[33m[PLUGIN_TIMINGS] [0mYour build spent significant time in plugins. 
+Here is a breakdown:
+  - tanstack-start-core:import-protection (53%)
+  - vite-tsconfig-paths (39%)
+  - tanstack-start-core:import-protection-transform-cache (7%)
+See https://rolldown.rs/reference/InputOptions.checks#plugintimings for more 
+details.
+[39m
+[33m[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: 
+https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via 
+build.chunkSizeWarningLimit.[39m
+[32mΓ£ô built in 3.21s[39m
+[36mvite v8.1.4 [32mbuilding ssr environment for production...[36m[39m
+[2K
+transforming...Γ£ô 90 modules transformed.
+rendering chunks...
+computing gzip size...
+node_modules/.nitro/vite/services/ssr/assets/styles-Bc7yRO38.css                     84.60 kB Γöé gzip: 14.09 kB
+node_modules/.nitro/vite/services/ssr/assets/empty-plugin-adapters-D9UWiqvJ.js        0.22 kB Γöé gzip:  0.16 kB
+node_modules/.nitro/vite/services/ssr/assets/_mentorId-Czsksj_A.js                    0.34 kB Γöé gzip:  0.22 kB
+node_modules/.nitro/vite/services/ssr/assets/firebase-DcpvAb7t.js                     0.57 kB Γöé gzip:  0.35 kB
+node_modules/.nitro/vite/services/ssr/assets/label-CBN4gKb1.js                        0.64 kB Γöé gzip:  0.39 kB
+node_modules/.nitro/vite/services/ssr/assets/_mentorId-VmoNRHeC.js                    0.65 kB Γöé gzip:  0.37 kB
+node_modules/.nitro/vite/services/ssr/assets/textarea-BspinaDw.js                     0.67 kB Γöé gzip:  0.43 kB
+node_modules/.nitro/vite/services/ssr/assets/input-BOLqPEDF.js                        0.76 kB Γöé gzip:  0.46 kB
+node_modules/.nitro/vite/services/ssr/assets/createMiddleware-B_4t7rW1.js             0.83 kB Γöé gzip:  0.32 kB
+node_modules/.nitro/vite/services/ssr/assets/badge-CUlg4lrK.js                        0.99 kB Γöé gzip:  0.51 kB
+node_modules/.nitro/vite/services/ssr/assets/start-BcSBlhe9.js                        1.43 kB Γöé gzip:  0.66 kB
+node_modules/.nitro/vite/services/ssr/assets/card-CEYhsqsV.js                         1.55 kB Γöé gzip:  0.48 kB
+node_modules/.nitro/vite/services/ssr/index.js                                        3.41 kB Γöé gzip:  1.46 kB
+node_modules/.nitro/vite/services/ssr/assets/forgot-password-CMp0D9Id.js              3.96 kB Γöé gzip:  1.38 kB
+node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-CbqIAfbO.js   4.66 kB Γöé gzip:  0.92 kB
+node_modules/.nitro/vite/services/ssr/assets/map-DlIc5W5E.js                          4.93 kB Γöé gzip:  1.69 kB
+node_modules/.nitro/vite/services/ssr/assets/mentors-CpVvG9wy.js                      5.18 kB Γöé gzip:  1.82 kB
+node_modules/.nitro/vite/services/ssr/assets/profile-DjZ3IAcQ.js                      5.70 kB Γöé gzip:  1.67 kB
+node_modules/.nitro/vite/services/ssr/assets/register-Df43nuI1.js                     6.70 kB Γöé gzip:  2.02 kB
+node_modules/.nitro/vite/services/ssr/assets/login-CT0p9GRi.js                        7.25 kB Γöé gzip:  2.22 kB
+node_modules/.nitro/vite/services/ssr/assets/dashboard-CP7diQ3p.js                    7.82 kB Γöé gzip:  2.13 kB
+node_modules/.nitro/vite/services/ssr/assets/chat-bqzTtKR3.js                         8.10 kB Γöé gzip:  2.76 kB
+node_modules/.nitro/vite/services/ssr/assets/app-shell-CDxI71Nn.js                    9.67 kB Γöé gzip:  2.30 kB
+node_modules/.nitro/vite/services/ssr/assets/router-B944I2lQ.js                      10.39 kB Γöé gzip:  2.63 kB
+node_modules/.nitro/vite/services/ssr/assets/routes-CX-IHV68.js                      12.33 kB Γöé gzip:  3.46 kB
+node_modules/.nitro/vite/services/ssr/assets/lecturer-B0qMadr1.js                    13.13 kB Γöé gzip:  3.13 kB
+node_modules/.nitro/vite/services/ssr/assets/server-BKlVXgrr.js                      58.73 kB Γöé gzip: 15.11 kB
+
+[32mΓ£ô built in 1.30s[39m
+
+[90m[[90mnitro[90m][39m [35mΓùÉ[39m Building [[35mNitro[39m] [2m(preset: [36mcloudflare-module[39m, compatibility: [36m2026-07-19[39m)[22m
+[90m[[90mnitro[90m][39m [32mΓ£ö[39m Generated public [36m.output/public[39m
+[36mvite v8.1.4 [32mbuilding nitro environment for production...[36m[39m
+
+[43m[30m WARN [39m[49m [36minlineDynamicImports[39m option is ignored 
+because the [36mcodeSplitting[39m option is specified.
+
+[2K
+transforming...Γ£ô 2009 modules transformed.
+rendering chunks...
+computing gzip size...
+.output/server/_ssr/empty-plugin-adapters-D9UWiqvJ.mjs           0.23 kB Γöé gzip:   0.16 kB
+.output/server/_mentorId-Czsksj_A.mjs                            0.41 kB Γöé gzip:   0.27 kB
+.output/server/_chunks/ssr-renderer.mjs                          0.60 kB Γöé gzip:   0.36 kB
+.output/server/_ssr/firebase-DcpvAb7t.mjs                        0.72 kB Γöé gzip:   0.42 kB
+.output/server/_libs/tanstack__react-query.mjs                   0.79 kB Γöé gzip:   0.38 kB
+.output/server/_ssr/createMiddleware-B_4t7rW1.mjs                0.83 kB Γöé gzip:   0.33 kB
+.output/server/_mentorId-VmoNRHeC.mjs                            0.85 kB Γöé gzip:   0.43 kB
+.output/server/_libs/firebase.mjs                                0.85 kB Γöé gzip:   0.53 kB
+.output/server/_ssr/label-CBN4gKb1.mjs                           0.91 kB Γöé gzip:   0.48 kB
+.output/server/_ssr/textarea-BspinaDw.mjs                        0.99 kB Γöé gzip:   0.53 kB
+.output/server/_ssr/input-BOLqPEDF.mjs                           1.08 kB Γöé gzip:   0.57 kB
+.output/server/_runtime.mjs                                      1.14 kB Γöé gzip:   0.57 kB
+.output/server/_libs/hookable.mjs                                1.16 kB Γöé gzip:   0.51 kB
+.output/server/_ssr/badge-CUlg4lrK.mjs                           1.20 kB Γöé gzip:   0.56 kB
+.output/server/_ssr/start-BcSBlhe9.mjs                           1.39 kB Γöé gzip:   0.65 kB
+.output/server/_ssr/card-CEYhsqsV.mjs                            2.03 kB Γöé gzip:   0.59 kB
+.output/server/_libs/class-variance-authority+clsx.mjs           3.17 kB Γöé gzip:   1.24 kB
+.output/server/_ssr/ssr.mjs                                      3.34 kB Γöé gzip:   1.46 kB
+.output/server/_tanstack-start-manifest_v-CbqIAfbO.mjs           4.71 kB Γöé gzip:   0.95 kB
+.output/server/_ssr/forgot-password-CMp0D9Id.mjs                 4.99 kB Γöé gzip:   1.51 kB
+.output/server/_ssr/map-DlIc5W5E.mjs                             5.71 kB Γöé gzip:   1.82 kB
+.output/server/_ssr/mentors-CpVvG9wy.mjs                         6.36 kB Γöé gzip:   1.98 kB
+.output/server/_ssr/profile-DjZ3IAcQ.mjs                         6.92 kB Γöé gzip:   1.78 kB
+.output/server/_ssr/register-Df43nuI1.mjs                        8.09 kB Γöé gzip:   2.19 kB
+.output/server/_ssr/login-CT0p9GRi.mjs                           8.84 kB Γöé gzip:   2.39 kB
+.output/server/_ssr/dashboard-CP7diQ3p.mjs                       9.33 kB Γöé gzip:   2.24 kB
+.output/server/_ssr/chat-bqzTtKR3.mjs                            9.46 kB Γöé gzip:   2.91 kB
+.output/server/_libs/h3-v2+rou3.mjs                              9.81 kB Γöé gzip:   3.05 kB
+.output/server/_ssr/router-B944I2lQ.mjs                         10.71 kB Γöé gzip:   2.70 kB
+.output/server/_ssr/app-shell-CDxI71Nn.mjs                      11.30 kB Γöé gzip:   2.42 kB
+.output/server/_libs/tanstack__history.mjs                      12.09 kB Γöé gzip:   3.48 kB
+.output/server/_libs/@radix-ui/react-label+[...].mjs            13.82 kB Γöé gzip:   3.89 kB
+.output/server/_ssr/routes-CX-IHV68.mjs                         14.51 kB Γöé gzip:   3.65 kB
+.output/server/_libs/h3+rou3+srvx.mjs                           14.86 kB Γöé gzip:   4.41 kB
+.output/server/index.mjs                                        15.33 kB Γöé gzip:   4.52 kB
+.output/server/_ssr/lecturer-B0qMadr1.mjs                       15.70 kB Γöé gzip:   3.30 kB
+.output/server/_libs/@radix-ui/react-compose-refs+[...].mjs     16.61 kB Γöé gzip:   4.59 kB
+.output/server/_libs/lucide-react.mjs                           17.38 kB Γöé gzip:   3.99 kB
+.output/server/_libs/tanstack__query-core.mjs                   47.96 kB Γöé gzip:  10.65 kB
+.output/server/_ssr/server-BKlVXgrr.mjs                         56.99 kB Γöé gzip:  14.97 kB
+.output/server/_libs/groq-sdk.mjs                               64.73 kB Γöé gzip:  17.49 kB
+.output/server/_libs/@tanstack/router-core+[...].mjs            80.16 kB Γöé gzip:  20.16 kB
+.output/server/_libs/@firebase/app+[...].mjs                    86.81 kB Γöé gzip:  19.65 kB
+.output/server/_libs/tailwind-merge.mjs                         88.13 kB Γöé gzip:  15.66 kB
+.output/server/_libs/vis.gl__react-google-maps.mjs             100.75 kB Γöé gzip:  24.80 kB
+.output/server/_libs/firebase__auth.mjs                        249.05 kB Γöé gzip:  47.37 kB
+.output/server/_libs/@tanstack/react-router+[...].mjs          656.49 kB Γöé gzip: 138.06 kB
+.output/server/_libs/@firebase/firestore+[...].mjs           1,015.89 kB Γöé gzip: 215.42 kB
+
+[32mΓ£ô built in 1.36s[39m
+[90m[[90mnitro[90m][39m [36mΓä╣[39m Using auto generated worker name: [36mhelpinghands4u-milo2[39m
+[36mΓä╣[39m Generated [36m.output/server/wrangler.json[39m
+[36mΓä╣[39m Generated [36m.wrangler/deploy/config.json[39m
+[36mΓä╣[39m Generated [36m.output/public/_headers[39m
+[36mΓä╣[39m Generated [36m.output/nitro.json[39m
+
+[90m[[90mnitro[90m][39m [32mΓ£ö[39m You can preview this build using [36mnpx vite preview[39m
+[90m[[90mnitro[90m][39m [32mΓ£ö[39m You can deploy this build using [36mnpx nitro deploy --prebuilt[39m

@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { APIProvider, Map, AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
+import { APIProvider, Map, AdvancedMarker, useMap, Pin } from "@vis.gl/react-google-maps";
 import { AppShell } from "@/components/app-shell";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "@/hooks/useLocation";
 
 export const Route = createFileRoute("/map")({
   component: CampusMap,
@@ -94,9 +95,29 @@ const buildingList = [
   "Canteen",
   "Parking",
 ];
+function FollowMe({
+  location,
+}: {
+  location: { latitude: number; longitude: number } | null;
+}) {
+  const map = useMap();
 
+  useEffect(() => {
+    if (!map || !location) return;
+
+    map.panTo({
+      lat: location.latitude,
+      lng: location.longitude,
+    });
+
+    map.setZoom(20);
+  }, [location?.latitude, location?.longitude]);
+
+  return null;
+}
 function CampusMap() {
  const [selectedBuilding, setSelectedBuilding] = useState("");
+ const location = useLocation();
  const selectedPlace = campusLocations.find(
   (p) => p.name === selectedBuilding
 );
@@ -166,6 +187,14 @@ function CampusMap() {
 >
   <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
     <Map
+  center={
+    location
+      ? {
+          lat: location.latitude,
+          lng: location.longitude,
+        }
+      : center
+  }
       defaultCenter={center}
       defaultZoom={19}
       mapId="cadd3747dd38eb48d7ade084"
@@ -173,6 +202,22 @@ function CampusMap() {
       gestureHandling="greedy"
     >
       <FlyToLocation selectedBuilding={selectedBuilding} />
+      <FollowMe location={location} />
+      {location && (
+  <AdvancedMarker
+    position={{
+      lat: location.latitude,
+      lng: location.longitude,
+    }}
+    title="You"
+  >
+    <Pin
+      background="#0ea5e9"
+      borderColor="#0284c7"
+      glyphColor="white"
+    />
+  </AdvancedMarker>
+)}
       {campusLocations.map((place) => (
         <AdvancedMarker
           key={place.id}

@@ -47,6 +47,23 @@ function RegisterPage() {
 );
 
       const user = userCredential.user;
+      if (role === "senior") {
+  await setDoc(doc(db, "seniors", user.uid), {
+    name: `${firstName} ${lastName}`,
+    email: user.email,
+    department: "",
+    year: "",
+    bio: "",
+    skills: [],
+    languages: [],
+    online: true,
+    lastSeen: serverTimestamp(),
+    photo: "",
+    rating: 5,
+    totalHelp: 0,
+    createdAt: serverTimestamp(),
+  });
+}
  
       await setDoc(doc(db, "users", user.uid), {
         firstName,

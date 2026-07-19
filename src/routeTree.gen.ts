@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as NearbyRouteImport } from './routes/nearby'
 import { Route as MentorsRouteImport } from './routes/mentors'
 import { Route as MapRouteImport } from './routes/map'
 import { Route as LoginRouteImport } from './routes/login'
@@ -19,6 +20,7 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ChatMentorIdRouteImport } from './routes/chat/$mentorId'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -28,6 +30,11 @@ const RegisterRoute = RegisterRouteImport.update({
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NearbyRoute = NearbyRouteImport.update({
+  id: '/nearby',
+  path: '/nearby',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MentorsRoute = MentorsRouteImport.update({
@@ -70,43 +77,54 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChatMentorIdRoute = ChatMentorIdRouteImport.update({
+  id: '/$mentorId',
+  path: '/$mentorId',
+  getParentRoute: () => ChatRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/chat': typeof ChatRoute
+  '/chat': typeof ChatRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/lecturer': typeof LecturerRoute
   '/login': typeof LoginRoute
   '/map': typeof MapRoute
   '/mentors': typeof MentorsRoute
+  '/nearby': typeof NearbyRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/chat/$mentorId': typeof ChatMentorIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/chat': typeof ChatRoute
+  '/chat': typeof ChatRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/lecturer': typeof LecturerRoute
   '/login': typeof LoginRoute
   '/map': typeof MapRoute
   '/mentors': typeof MentorsRoute
+  '/nearby': typeof NearbyRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/chat/$mentorId': typeof ChatMentorIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/chat': typeof ChatRoute
+  '/chat': typeof ChatRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/lecturer': typeof LecturerRoute
   '/login': typeof LoginRoute
   '/map': typeof MapRoute
   '/mentors': typeof MentorsRoute
+  '/nearby': typeof NearbyRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/chat/$mentorId': typeof ChatMentorIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -119,8 +137,10 @@ export interface FileRouteTypes {
     | '/login'
     | '/map'
     | '/mentors'
+    | '/nearby'
     | '/profile'
     | '/register'
+    | '/chat/$mentorId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -131,8 +151,10 @@ export interface FileRouteTypes {
     | '/login'
     | '/map'
     | '/mentors'
+    | '/nearby'
     | '/profile'
     | '/register'
+    | '/chat/$mentorId'
   id:
     | '__root__'
     | '/'
@@ -143,19 +165,22 @@ export interface FileRouteTypes {
     | '/login'
     | '/map'
     | '/mentors'
+    | '/nearby'
     | '/profile'
     | '/register'
+    | '/chat/$mentorId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ChatRoute: typeof ChatRoute
+  ChatRoute: typeof ChatRouteWithChildren
   DashboardRoute: typeof DashboardRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LecturerRoute: typeof LecturerRoute
   LoginRoute: typeof LoginRoute
   MapRoute: typeof MapRoute
   MentorsRoute: typeof MentorsRoute
+  NearbyRoute: typeof NearbyRoute
   ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
 }
@@ -174,6 +199,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nearby': {
+      id: '/nearby'
+      path: '/nearby'
+      fullPath: '/nearby'
+      preLoaderRoute: typeof NearbyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mentors': {
@@ -232,18 +264,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/chat/$mentorId': {
+      id: '/chat/$mentorId'
+      path: '/$mentorId'
+      fullPath: '/chat/$mentorId'
+      preLoaderRoute: typeof ChatMentorIdRouteImport
+      parentRoute: typeof ChatRoute
+    }
   }
 }
 
+interface ChatRouteChildren {
+  ChatMentorIdRoute: typeof ChatMentorIdRoute
+}
+
+const ChatRouteChildren: ChatRouteChildren = {
+  ChatMentorIdRoute: ChatMentorIdRoute,
+}
+
+const ChatRouteWithChildren = ChatRoute._addFileChildren(ChatRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ChatRoute: ChatRoute,
+  ChatRoute: ChatRouteWithChildren,
   DashboardRoute: DashboardRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LecturerRoute: LecturerRoute,
   LoginRoute: LoginRoute,
   MapRoute: MapRoute,
   MentorsRoute: MentorsRoute,
+  NearbyRoute: NearbyRoute,
   ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,
 }
