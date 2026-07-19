@@ -4,6 +4,9 @@ import { AppShell } from "@/components/app-shell";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
 import { useLocation } from "@/hooks/useLocation";
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { auth } from "@/lib/firebase";
 
 export const Route = createFileRoute("/map")({
   component: CampusMap,
@@ -117,7 +120,22 @@ function FollowMe({
 }
 function CampusMap() {
  const [selectedBuilding, setSelectedBuilding] = useState("");
- const location = useLocation();
+ const location = useLocation();useEffect(() => {
+  const unsubscribe = onSnapshot(
+    collection(db, "users"),
+    (snapshot) => {
+      setUsers(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+      );
+    }
+  );
+
+  return unsubscribe;
+}, []);
+ const [users, setUsers] = useState<any[]>([]);
  const selectedPlace = campusLocations.find(
   (p) => p.name === selectedBuilding
 );
@@ -218,6 +236,34 @@ function CampusMap() {
     />
   </AdvancedMarker>
 )}
+{users
+  .filter(
+    (u) =>
+      u.latitude &&
+      u.longitude &&
+      u.id !== auth.currentUser?.uid
+  )
+  .map((u) => (
+    <AdvancedMarker
+      key={u.id}
+      position={{
+        lat: u.latitude,
+        lng: u.longitude,
+      }}
+    >
+      <div
+        style={{
+          background: "#16a34a",
+          color: "white",
+          padding: "5px 10px",
+          borderRadius: "10px",
+          fontWeight: "bold",
+        }}
+      >
+        {u.name}
+      </div>
+    </AdvancedMarker>
+  ))}
       {campusLocations.map((place) => (
         <AdvancedMarker
           key={place.id}

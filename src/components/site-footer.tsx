@@ -41,9 +41,27 @@ export function SiteFooter() {
             </ul>
           </div>
         </div>
-        <div className="mt-8 border-t border-border pt-6 text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Student ChatBot AI. Built for learners, mentors and lecturers.
-        </div>
+      <div className="mt-8 border-t border-border pt-6 text-center">
+  <p className="text-sm font-semibold text-foreground">
+    Student ChatBot AI © {new Date().getFullYear()}
+  </p>
+
+  <p className="mt-2 text-sm text-muted-foreground">
+    Developed by <strong>Mohammed Shahinuddin Molla</strong>
+  </p>
+
+  <p className="text-sm text-muted-foreground">
+    Team Member: <strong>Taim Hassan Saim</strong>
+  </p>
+
+  <p className="mt-2 text-xs text-muted-foreground">
+    Brainware University • B.Tech CSE (Cyber Security) • Dip. CSE
+  </p>
+
+  <p className="mt-1 text-xs text-muted-foreground">
+    Powered by Firebase • Google Maps • Groq AI
+  </p>
+</div>
       </div>
     </footer>
   );
