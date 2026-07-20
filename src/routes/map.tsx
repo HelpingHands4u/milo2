@@ -16,6 +16,8 @@ const center = {
   lat: 22.7317737,
   lng: 88.4992791,
 };
+const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+
 function FlyToLocation({ selectedBuilding }: { selectedBuilding: string }) {
   const map = useMap();
 
@@ -91,13 +93,8 @@ const campusLocations = [
     description: "Main Entrance",
   },
 ];
-const buildingList = [
-  "Main Gate",
-  "Academic Block",
-  "Library",
-  "Canteen",
-  "Parking",
-];
+const buildingList = campusLocations.map((place) => place.name);
+
 function FollowMe({
   location,
 }: {
@@ -119,26 +116,29 @@ function FollowMe({
   return null;
 }
 function CampusMap() {
- const [selectedBuilding, setSelectedBuilding] = useState("");
- const location = useLocation();useEffect(() => {
-  const unsubscribe = onSnapshot(
-    collection(db, "users"),
-    (snapshot) => {
-      setUsers(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }))
-      );
-    }
-  );
+  const [selectedBuilding, setSelectedBuilding] = useState("");
+  const [users, setUsers] = useState<any[]>([]);
+  const location = useLocation();
 
-  return unsubscribe;
-}, []);
- const [users, setUsers] = useState<any[]>([]);
- const selectedPlace = campusLocations.find(
-  (p) => p.name === selectedBuilding
-);
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      collection(db, "users"),
+      (snapshot) => {
+        setUsers(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+        );
+      }
+    );
+
+    return unsubscribe;
+  }, []);
+
+  const selectedPlace = campusLocations.find(
+    (p) => p.name === selectedBuilding
+  );
  const [search, setSearch] = useState("");
   return (
     <AppShell>
@@ -203,89 +203,95 @@ function CampusMap() {
     overflow: "hidden",
   }}
 >
-  <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
-    <Map
-  center={
-    location
-      ? {
-          lat: location.latitude,
-          lng: location.longitude,
+  {googleMapsApiKey ? (
+    <APIProvider apiKey={googleMapsApiKey}>
+      <Map
+        center={
+          location
+            ? {
+                lat: location.latitude,
+                lng: location.longitude,
+              }
+            : center
         }
-      : center
-  }
-      defaultCenter={center}
-      defaultZoom={19}
-      mapId="cadd3747dd38eb48d7ade084"
-      mapTypeId="satellite"
-      gestureHandling="greedy"
-    >
-      <FlyToLocation selectedBuilding={selectedBuilding} />
-      <FollowMe location={location} />
-      {location && (
-  <AdvancedMarker
-    position={{
-      lat: location.latitude,
-      lng: location.longitude,
-    }}
-    title="You"
-  >
-    <Pin
-      background="#0ea5e9"
-      borderColor="#0284c7"
-      glyphColor="white"
-    />
-  </AdvancedMarker>
-)}
-{users
-  .filter(
-    (u) =>
-      u.latitude &&
-      u.longitude &&
-      u.id !== auth.currentUser?.uid
-  )
-  .map((u) => (
-    <AdvancedMarker
-      key={u.id}
-      position={{
-        lat: u.latitude,
-        lng: u.longitude,
-      }}
-    >
-      <div
-        style={{
-          background: "#16a34a",
-          color: "white",
-          padding: "5px 10px",
-          borderRadius: "10px",
-          fontWeight: "bold",
-        }}
+        defaultCenter={center}
+        defaultZoom={19}
+        mapId="cadd3747dd38eb48d7ade084"
+        mapTypeId="satellite"
+        gestureHandling="greedy"
       >
-        {u.name}
-      </div>
-    </AdvancedMarker>
-  ))}
-      {campusLocations.map((place) => (
-        <AdvancedMarker
-          key={place.id}
-          position={place.position}
-          title={place.name}
-        >
-          <div
-            style={{
-              background: "#2563eb",
-              color: "white",
-              padding: "6px 10px",
-              borderRadius: "8px",
-              fontSize: "12px",
-              fontWeight: "bold",
+        <FlyToLocation selectedBuilding={selectedBuilding} />
+        <FollowMe location={location} />
+        {location && (
+          <AdvancedMarker
+            position={{
+              lat: Number(location.latitude),
+              lng: Number(location.longitude),
             }}
+            title="You"
           >
-            {place.name}
-          </div>
-        </AdvancedMarker>
-      ))}
-    </Map>
-  </APIProvider>
+            <Pin
+              background="#0ea5e9"
+              borderColor="#0284c7"
+              glyphColor="white"
+            />
+          </AdvancedMarker>
+        )}
+        {users
+          .filter(
+            (u) =>
+              typeof u.latitude === "number" &&
+              typeof u.longitude === "number" &&
+              u.id !== auth.currentUser?.uid
+          )
+          .map((u) => (
+            <AdvancedMarker
+              key={u.id}
+              position={{
+                lat: Number(u.latitude),
+                lng: Number(u.longitude),
+              }}
+            >
+              <div
+                style={{
+                  background: "#16a34a",
+                  color: "white",
+                  padding: "5px 10px",
+                  borderRadius: "10px",
+                  fontWeight: "bold",
+                }}
+              >
+                {u.name}
+              </div>
+            </AdvancedMarker>
+          ))}
+        {campusLocations.map((place) => (
+          <AdvancedMarker
+            key={place.id}
+            position={place.position}
+            title={place.name}
+          >
+            <div
+              style={{
+                background: "#2563eb",
+                color: "white",
+                padding: "6px 10px",
+                borderRadius: "8px",
+                fontSize: "12px",
+                fontWeight: "bold",
+              }}
+            >
+              {place.name}
+            </div>
+          </AdvancedMarker>
+        ))}
+      </Map>
+    </APIProvider>
+  ) : (
+    <div className="h-full flex items-center justify-center bg-gray-100 text-gray-600">
+      Google Maps API key missing. Set VITE_GOOGLE_MAPS_API_KEY in your env.
+    </div>
+  )}
 </div>
   {/* Google Map */}
  
